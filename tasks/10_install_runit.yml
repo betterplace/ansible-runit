@@ -4,6 +4,7 @@
     repo=https://github.com/betterplace/runit-rpm
     dest=/opt/build/runit-rpm
     version=b8e14f706165cd0e2d6d1ec6681d7efbfcd58ce9
+    update=no
 
 - name: Check runit rpm existence
   stat: path=/root/rpmbuild/RPMS/x86_64/runit-2.1.2-1.el6.x86_64.rpm
