@@ -6,8 +6,19 @@
     version=b8e14f706165cd0e2d6d1ec6681d7efbfcd58ce9
     update=no
 
+- name: Check for Amazon Linux
+  set_fact: distro_tag="amazn1"
+  when: "ansible_distribution == 'Amazon'"
+
+- name: Check for Centos
+  set_fact: distro_tag="el{{ansible_distribution_major_version}}.centos"
+  when: "ansible_distribution == 'CentOS'"
+
+- name: Set the rpm name
+  set_fact: runit_rpm="/root/rpmbuild/RPMS/x86_64/runit-2.1.2-1.{{distro_tag}}.x86_64.rpm"
+
 - name: Check runit rpm existence
-  stat: path=/root/rpmbuild/RPMS/x86_64/runit-2.1.2-1.el6.x86_64.rpm
+  stat: path="{{runit_rpm}}"
   register: runit_rpm_exists
 
 - name: Execute runit build script
@@ -15,7 +26,7 @@
   when: not runit_rpm_exists.stat.exists
 
 - name: Install runit rpm
-  yum: pkg=/root/rpmbuild/RPMS/x86_64/runit-2.1.2-1.el6.x86_64.rpm state=installed
+  yum: pkg="{{runit_rpm}}" state=installed
 
 - name: Ensure sv and service directory exists
   file: path=/etc/{{item}} state=directory
