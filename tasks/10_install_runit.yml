@@ -7,7 +7,7 @@
     update=no
 
 - name: Check for Amazon Linux
-  set_fact: distro_tag="amazn1"
+  set_fact: distro_tag="amzn1"
   when: "ansible_distribution == 'Amazon'"
 
 - name: Check for Centos
