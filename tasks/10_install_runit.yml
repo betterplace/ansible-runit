@@ -1,4 +1,12 @@
 ---
+- name: Install prerequisites
+  yum: name="{{item}}" state=installed
+  with_items:
+  - rpmdevtools
+  - git
+  - glibc-static
+  - gcc
+
 - name: Clone runit build repo
   git:
     repo=https://github.com/betterplace/runit-rpm
@@ -10,9 +18,13 @@
   set_fact: distro_tag="amzn1"
   when: "ansible_distribution == 'Amazon'"
 
-- name: Check for Centos
-  set_fact: distro_tag="el{{ansible_distribution_major_version}}.centos"
-  when: "ansible_distribution == 'CentOS'"
+- name: Check for Centos 6
+  set_fact: distro_tag="el6"
+  when: "ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'"
+
+- name: Check for Centos 7
+  set_fact: distro_tag="el7.centos"
+  when: "ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'"
 
 - name: Set the rpm name
   set_fact: runit_rpm="/root/rpmbuild/RPMS/x86_64/runit-2.1.2-1.{{distro_tag}}.x86_64.rpm"
