@@ -7,7 +7,7 @@
     update=no
 
 - name: Check runit rpm existence
-  stat: path=/root/rpmbuild/RPMS/x86_64/runit-2.1.2-1.el6.x86_64.rpm
+  stat: path=/root/rpmbuild/RPMS/x89_64/runit-2.1.2-1.el6.x86_64.rpm
   register: runit_rpm_exists
 
 - name: Execute runit build script
@@ -15,7 +15,7 @@
   when: not runit_rpm_exists.stat.exists
 
 - name: Install runit rpm
-  yum: pkg=/root/rpmbuild/RPMS/x86_64/runit-2.1.2-1.el6.x86_64.rpm state=installed
+  yum: pkg=/root/rpmbuild/RPMS/x86_64/runit-2.1.2-1.el7.centos.x86_64.rpm state=installed
 
 - name: Ensure sv and service directory exists
   file: path=/etc/{{item}} state=directory
